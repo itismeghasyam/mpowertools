@@ -1,18 +1,4 @@
-extract.voice.features.yaafe <- function(fileNames, featurePlan, srate, stepSize){
-  # Write feature plan to a text file
-  write.table(fileNames, 
-              file = 'dataFiles.txt', 
-              sep = '\n', quote = F, row.names = F,
-              col.names = F)
-  
-  # Write data file names to a text file
-  write.table(fileNames, 
-              file = 'dataFiles.txt', 
-              sep = '\n', quote = F, row.names = F,
-              col.names = F)
-  
-  #yaafe -r 44100 -n -c featurePlan.txt -i dataFiles.txt
-  
+extract.voice.features.yaafe <- function(fname){
   # Extract all relevant features
   features = c(amplitude.features(paste0(fname,'.frame.csv'), srate),
                amplitudeModulation.features(paste0(fname,'.ampmod.csv')),
@@ -43,4 +29,6 @@ extract.voice.features.yaafe <- function(fileNames, featurePlan, srate, stepSize
                spectralVariation.features(paste0(fname,'.specvar.csv')),
                temporalShapeStatistics.features(paste0(fname,'.tempstat.csv')),
                zerocrossing.features(paste0(fname,'.zcr.csv')))
+  
+  return(cbind(data.frame(fname = fname), data.frame(t(features))))
 }
